@@ -1,0 +1,27 @@
+name: Rebuild 2025 DENNIS art
+
+on:
+  push:
+    branches: [rebuild-art]
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: rebuild-art
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Generate and force-push main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 rebuild_2025.py
+          cd github-art
+          git remote add dest "https://x-access-token:${GITHUB_TOKEN}@github.com/dennisg009/contribution-art.git"
+          git push --force dest main
