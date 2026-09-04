@@ -1,6 +1,5 @@
-name: Fill dim 2025 days
+name: Fill remaining faint 2025 days
 
-# One-shot. Path filter means later empty commits will not re-run this.
 on:
   push:
     paths:
@@ -16,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Append unique backdated commits on faint letter days
+      - name: Fill March and early April only
         run: |
           set -euo pipefail
           git config user.name "Dennis Gavrilenko"
@@ -41,59 +40,14 @@ jobs:
           2025-04-09
           2025-04-10
           2025-04-11
-          2025-04-20
-          2025-04-21
-          2025-04-22
-          2025-04-23
-          2025-04-24
-          2025-04-25
-          2025-04-26
-          2025-04-27
-          2025-04-30
-          2025-05-03
-          2025-05-04
-          2025-05-07
-          2025-05-10
-          2025-05-11
-          2025-05-14
-          2025-05-17
-          2025-05-18
-          2025-05-24
-          2025-06-01
-          2025-06-02
-          2025-06-03
-          2025-06-04
-          2025-06-05
-          2025-06-06
-          2025-06-07
-          2025-06-09
-          2025-06-10
-          2025-06-18
-          2025-06-26
-          2025-06-27
-          2025-06-29
-          2025-06-30
-          2025-07-01
-          2025-07-02
-          2025-07-03
-          2025-07-04
-          2025-07-05
-          2025-07-13
-          2025-07-14
-          2025-07-15
-          2025-07-16
-          2025-07-17
-          2025-07-18
-          2025-07-19
-          2025-07-21
-          2025-07-22""".split()
+          2025-04-20""".split()
           n = 0
           for d in DAYS:
               for i in range(22):
-                  stamp = f"{d}T12:{i:02d}:00+00:00"
+                  stamp = f"{d}T13:{i:02d}:00+00:00"
                   env = {**os.environ, "GIT_AUTHOR_DATE": stamp, "GIT_COMMITTER_DATE": stamp}
                   subprocess.run(
-                      ["git", "commit", "--allow-empty", "-q", "-m", f"art {d} fill {i}"],
+                      ["git", "commit", "--allow-empty", "-q", "-m", f"art {d} fill2 {i}"],
                       env=env, check=True,
                   )
                   n += 1
